@@ -390,9 +390,9 @@ body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;opac
 .nav{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:480px;z-index:100;background:rgba(8,8,11,.82);border-top:1px solid var(--border);backdrop-filter:blur(32px) saturate(1.4);-webkit-backdrop-filter:blur(32px) saturate(1.4);display:flex;padding:10px 0 max(env(safe-area-inset-bottom,10px),10px)}
 [data-theme=light] .nav{background:rgba(250,249,246,.82);border-top:1px solid var(--border)}
 .nav-btn{flex:1;background:none;border:none;display:flex;flex-direction:column;align-items:center;gap:3px;cursor:pointer;padding:6px 4px;font-family:var(--sans)}
-.nav-btn-ico{font-size:21px;line-height:1;filter:grayscale(1);opacity:.32;transition:all .3s cubic-bezier(.22,1,.36,1)}
+.nav-btn-ico{width:23px;height:23px;line-height:0;color:var(--t3);opacity:.7;transition:all .3s cubic-bezier(.22,1,.36,1)}.nav-btn-ico svg{width:100%;height:100%;display:block}
 .nav-btn-lbl{font-size:9px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--t3);transition:color .3s}
-.nav-btn.on .nav-btn-ico{filter:grayscale(0);opacity:1;transform:translateY(-2px) scale(1.05)}
+.nav-btn.on .nav-btn-ico{color:var(--accent);opacity:1;transform:translateY(-2px)}
 .nav-btn.on .nav-btn-lbl{color:var(--t1)}
 .empty-txt{font-size:12px;color:var(--t3);font-style:italic;padding:8px 0}
 .btn-danger{width:100%;background:var(--red-bg);border:1px solid var(--red-border);border-radius:var(--rs);padding:12px;font-size:13px;font-weight:700;color:var(--red);cursor:pointer;text-align:left;font-family:var(--sans)}
@@ -417,6 +417,61 @@ selectselect.setting-inp-sel{background:var(--bg2);border:1px solid var(--border
 .insight-icon{font-size:17px;color:var(--accent);flex-shrink:0;margin-top:1px}
 .insight-text{font-size:13px;line-height:1.55;color:var(--t1);font-weight:500}
 .insight-text strong{color:var(--accent);font-weight:600}
+/* ═══ VOICE SCREEN ═══ */
+.voice-hero{position:relative;display:flex;align-items:center;justify-content:center;height:240px;margin:18px 0 8px}
+.voice-mic{position:relative;z-index:3;width:118px;height:118px;border-radius:50%;border:none;cursor:pointer;
+  background:linear-gradient(140deg,#5BC8FF,#A88BFF 55%,#E8B782);
+  display:flex;align-items:center;justify-content:center;color:#fff;
+  box-shadow:0 18px 60px rgba(168,139,255,.45),0 8px 24px rgba(0,0,0,.5),inset 0 1px 1px rgba(255,255,255,.3);
+  transition:transform .3s cubic-bezier(.22,1,.36,1),box-shadow .3s;outline:none}
+.voice-mic svg{width:46px;height:46px;display:block}
+.voice-mic:hover{transform:scale(1.04)}
+.voice-mic:active{transform:scale(.97)}
+.voice-mic.rec{background:linear-gradient(140deg,#FF6B5E,#FF4F8B);animation:micPulse 1.3s ease-in-out infinite}
+.voice-mic.think{animation:micThink 2.2s linear infinite}
+@keyframes micPulse{0%,100%{transform:scale(1)}50%{transform:scale(1.06)}}
+@keyframes micThink{from{filter:hue-rotate(0)}to{filter:hue-rotate(360deg)}}
+
+/* Rings ondulantes cuando graba */
+.voice-mic-ring,.voice-mic-ring-2{position:absolute;top:50%;left:50%;width:118px;height:118px;border-radius:50%;border:2px solid var(--accent);opacity:0;transform:translate(-50%,-50%);pointer-events:none;z-index:1}
+.voice-hero.recording .voice-mic-ring{animation:ringExpand 1.8s ease-out infinite}
+.voice-hero.recording .voice-mic-ring-2{animation:ringExpand 1.8s ease-out .9s infinite;border-color:var(--purple)}
+@keyframes ringExpand{0%{opacity:.7;width:118px;height:118px}100%{opacity:0;width:240px;height:240px}}
+
+.voice-status-line{text-align:center;font-size:13px;font-family:var(--mono);color:var(--t2);letter-spacing:.05em;margin-bottom:18px;min-height:18px}
+.voice-status-line.live{color:var(--red);font-weight:600}
+.voice-status-line.live::before{content:'●';margin-right:6px;animation:livePulse 1s infinite}
+@keyframes livePulse{0%,100%{opacity:1}50%{opacity:.3}}
+
+.voice-card{background:linear-gradient(160deg,var(--bg1),var(--bg2));border:1px solid var(--border);border-radius:var(--r);padding:20px;margin-bottom:14px;box-shadow:var(--shadow-sm)}
+.voice-transcript{min-height:72px;font-size:16px;line-height:1.55;color:var(--t1);text-align:center;font-style:italic;padding:8px 4px 16px;font-family:var(--display);font-weight:500;letter-spacing:-.01em}
+.voice-transcript.ph{color:var(--t3);font-style:normal;font-size:14px;font-weight:400}
+.voice-actions{display:flex;gap:10px}
+.voice-btn-secondary{flex:1;background:var(--bg3);border:1px solid var(--border);border-radius:var(--rs);padding:13px;font-size:13px;font-weight:600;color:var(--t2);cursor:pointer;font-family:var(--sans);transition:all .2s}
+.voice-btn-secondary:hover{background:var(--bg2);color:var(--t1)}
+.voice-btn-primary{flex:2;background:linear-gradient(180deg,var(--accent),#D9A56F);color:#0a0a0f;border:none;border-radius:var(--rs);padding:13px;font-size:13px;font-weight:700;cursor:pointer;font-family:var(--sans);box-shadow:0 4px 14px rgba(232,183,130,.3);transition:all .2s}
+.voice-btn-primary:disabled{opacity:.35;cursor:default;box-shadow:none}
+.voice-btn-primary:not(:disabled):hover{transform:translateY(-1px);box-shadow:0 6px 20px rgba(232,183,130,.45)}
+
+.voice-examples{padding:8px 4px 0}
+.voice-examples-label{font-size:10px;font-weight:600;letter-spacing:.18em;text-transform:uppercase;color:var(--t3);margin-bottom:14px;font-family:var(--sans)}
+.voice-example{font-size:13px;line-height:1.5;color:var(--t2);padding:11px 14px;background:var(--bg2);border:1px solid var(--border);border-radius:var(--rs);margin-bottom:7px;font-style:italic;position:relative}
+.voice-example::before{content:'"';position:absolute;left:8px;top:2px;font-size:18px;color:var(--t4);font-style:normal}
+.voice-example::after{content:'"';position:absolute;right:9px;bottom:-4px;font-size:18px;color:var(--t4);font-style:normal}
+
+/* Estilo del botón Voz en el nav inferior — destacado en cobre */
+.nav-btn-voice .nav-btn-ico-voice{color:var(--accent);opacity:.95}
+.nav-btn-voice.on .nav-btn-ico{color:var(--accent);opacity:1}
+.nav-btn-voice .nav-btn-lbl{color:var(--accent);opacity:.85}
+.nav-btn-voice.on .nav-btn-lbl{color:var(--accent);opacity:1}
+
+
+/* Nav auto-hide al hacer scroll abajo (estilo iOS) */
+.nav{transition:transform .35s cubic-bezier(.22,1,.36,1),background .25s,border-color .25s}
+.nav.hidden{transform:translateX(-50%) translateY(120%)}
+/* Más padding inferior para que el contenido no quede tapado */
+.screen{padding-bottom:calc(max(env(safe-area-inset-bottom,8px),8px)+96px)!important}
+
 </style>
 </head>
 <body>
@@ -471,9 +526,16 @@ selectselect.setting-inp-sel{background:var(--bg2);border:1px solid var(--border
   <div class="card"><div class="label">Recuperación muscular</div><div class="muscle-list" id="muscleList"></div></div>
   <div class="day-tabs" id="gymTabs"></div>
   <div id="gymContent"></div>
-  <div class="card" style="margin-top:4px"><div class="label" style="margin-bottom:8px">Más</div><button class="btn-dashed" onclick="nav('history')" style="margin-bottom:8px">📋 Mis sesiones guardadas</button><button class="btn-dashed" onclick="nav('routine')" style="margin-bottom:8px">✏️ Editar mi rutina</button><button class="btn-dashed" onclick="nav('cardio')" style="margin-bottom:0">🏃 Cardio — calorías reales</button></div>
+  <div class="card" style="margin-top:4px"><div class="label" style="margin-bottom:8px">Más</div><button class="btn-dashed" onclick="nav('progress')" style="margin-bottom:8px">📈 Progreso de fuerza</button><button class="btn-dashed" onclick="nav('history')" style="margin-bottom:8px">📋 Mis sesiones guardadas</button><button class="btn-dashed" onclick="nav('routine')" style="margin-bottom:8px">✏️ Editar mi rutina</button><button class="btn-dashed" onclick="nav('cardio')" style="margin-bottom:0">🏃 Cardio — calorías reales</button></div>
 </div>
 
+
+
+<!-- PROGRESO -->
+<div class="screen" id="screen-progress">
+  <div class="topbar"><button class="back" onclick="nav('gym')">Gym</button><div class="topbar-title">PROGRESO DE FUERZA</div></div>
+  <div id="progressContent"></div>
+</div>
 
 <!-- CARDIO -->
 <div class="screen" id="screen-cardio">
@@ -633,25 +695,48 @@ selectselect.setting-inp-sel{background:var(--bg2);border:1px solid var(--border
   </div>
 </div>
 
-</div><!-- /app -->
 
-<button class="fab" id="fab" onclick="openVoice()">🎙️</button>
-<div class="overlay" id="overlay" onclick="closeVoice()"></div>
-<div class="voice-panel" id="voicePanel">
-  <div class="voice-handle"></div>
-  <div class="voice-text ph" id="voiceText">Pulsa el micro y cuéntame — gym, comida, sueño, peso…</div>
-  <div class="voice-status" id="voiceStatus"></div>
-  <div class="voice-acts">
-    <button class="voice-cancel" onclick="closeVoice()">Cancelar</button>
-    <button class="voice-send" id="voiceSend" disabled onclick="processVoice()">Procesar →</button>
+<!-- VOICE — pantalla dedicada del asistente -->
+<div class="screen" id="screen-voice">
+  <div class="topbar"><button class="back" onclick="nav('home')">Inicio</button><div class="topbar-title">ASISTENTE DE VOZ</div></div>
+
+  <div class="voice-hero">
+    <button class="voice-mic" id="voiceMic" onclick="toggleVoiceRec()" aria-label="Activar micrófono">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="3" width="6" height="12" rx="3"/><path d="M5 11a7 7 0 0014 0M12 18v3"/></svg>
+    </button>
+    <div class="voice-mic-ring" aria-hidden="true"></div>
+    <div class="voice-mic-ring-2" aria-hidden="true"></div>
+  </div>
+
+  <div class="voice-status-line" id="voiceStatus">Toca el micrófono para empezar</div>
+
+  <div class="voice-card">
+    <div class="voice-transcript ph" id="voiceText">Cuéntame qué has hecho hoy — gym, comida, sueño o peso.</div>
+    <div class="voice-actions">
+      <button class="voice-btn-secondary" id="voiceCancelBtn" onclick="cancelVoice()">Borrar</button>
+      <button class="voice-btn-primary" id="voiceSend" disabled onclick="processVoice()">Procesar →</button>
+    </div>
+  </div>
+
+  <div class="voice-examples">
+    <div class="voice-examples-label">Prueba a decir</div>
+    <div class="voice-example">"Hoy pesé 73,5 kg y dormí 7 horas y media"</div>
+    <div class="voice-example">"En la comida he tomado pollo 150g y arroz 80g"</div>
+    <div class="voice-example">"He hecho press banca 4 series de 8 con 70 kilos"</div>
+    <div class="voice-example">"Bebí 2 litros de agua hoy"</div>
   </div>
 </div>
+
+</div><!-- /app -->
+
+
 <nav class="nav" id="nav">
-  <button class="nav-btn on" data-s="home" onclick="nav('home')"><div class="nav-btn-ico">⌂</div><div class="nav-btn-lbl">Inicio</div></button>
-  <button class="nav-btn" data-s="gym" onclick="nav('gym')"><div class="nav-btn-ico">🏋️</div><div class="nav-btn-lbl">Gym</div></button>
-  <button class="nav-btn" data-s="body" onclick="nav('body')"><div class="nav-btn-ico">⚖️</div><div class="nav-btn-lbl">Cuerpo</div></button>
-  <button class="nav-btn" data-s="food" onclick="nav('food')"><div class="nav-btn-ico">🍽️</div><div class="nav-btn-lbl">Comida</div></button>
-  <button class="nav-btn" data-s="sleep" onclick="nav('sleep')"><div class="nav-btn-ico">😴</div><div class="nav-btn-lbl">Sueño</div></button>
+  <button class="nav-btn on" data-s="home" onclick="nav('home')"><div class="nav-btn-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M3 10.5L12 3l9 7.5"/><path d="M5 9.5V20h14V9.5"/><path d="M9.5 20v-6h5v6"/></svg></div><div class="nav-btn-lbl">Inicio</div></button>
+  <button class="nav-btn" data-s="gym" onclick="nav('gym')"><div class="nav-btn-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M6.5 7v10M17.5 7v10"/><path d="M3.5 9.5v5M20.5 9.5v5"/><path d="M6.5 12h11"/></svg></div><div class="nav-btn-lbl">Gym</div></button>
+  <button class="nav-btn" data-s="body" onclick="nav('body')"><div class="nav-btn-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="5" r="2.3"/><path d="M12 7.3V15"/><path d="M12 10l-4.5-1.5M12 10l4.5-1.5"/><path d="M12 15l-3 6M12 15l3 6"/></svg></div><div class="nav-btn-lbl">Cuerpo</div></button>
+  <button class="nav-btn nav-btn-voice" data-s="voice" onclick="nav('voice')"><div class="nav-btn-ico nav-btn-ico-voice"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5 11a7 7 0 0014 0M12 18v3"/></svg></div><div class="nav-btn-lbl">Voz</div></button>
+  <button class="nav-btn" data-s="food" onclick="nav('food')"><div class="nav-btn-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M5 3v7a2 2 0 002 2h0a2 2 0 002-2V3"/><path d="M7 12v9M7 3v4"/><path d="M17 3c-1.7 0-3 2.2-3 5s1 4 2 4v9"/></svg></div><div class="nav-btn-lbl">Comida</div></button>
+  <button class="nav-btn" data-s="sleep" onclick="nav('sleep')"><div class="nav-btn-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M20 13.5A8 8 0 1110.5 4a6.3 6.3 0 009.5 9.5z"/></svg></div><div class="nav-btn-lbl">Sueño</div></button>
 </nav>
 <script>
 'use strict';
@@ -736,12 +821,12 @@ function saveName(){
 // ROUTER
 var _cur='home';
 function nav(name){
+  if(typeof _showNav==='function')_showNav();
   document.querySelectorAll('.screen').forEach(function(s){s.classList.remove('active')});
   var sc=el('screen-'+name);if(sc)sc.classList.add('active');
   document.querySelectorAll('.nav-btn').forEach(function(b){b.classList.toggle('on',b.getAttribute('data-s')===name)});
   _cur=name;
-  var noFab=['profile','settings','csv','routine','review','hydration','cardio','history'];
-  var fab=el('fab');if(fab)fab.style.display=noFab.indexOf(name)>=0?'none':'flex';
+  // El antiguo FAB fue eliminado — voz ahora vive en su propia pestaña
   if(name==='home')renderHome();
   if(name==='gym')renderGym();
   if(name==='body')renderBody();
@@ -1423,27 +1508,82 @@ var _recog=null,_recording=false,_transcript='';
 function initRecog(){
   var SR=window.SpeechRecognition||window.webkitSpeechRecognition;if(!SR)return null;
   var r=new SR();r.lang='es-ES';r.continuous=false;r.interimResults=true;
-  r.onresult=function(e){var t=Array.from(e.results).map(function(r){return r[0].transcript}).join('');_transcript=t;var vt=el('voiceText');if(vt){vt.textContent=t;vt.classList.remove('ph')}};
-  r.onend=function(){_recording=false;var fab=el('fab');if(fab)fab.classList.remove('rec');var vs=el('voiceStatus');var sb=el('voiceSend');if(vs)vs.textContent=_transcript?'Listo para procesar':'Nada detectado';if(sb)sb.disabled=!_transcript};
-  r.onerror=function(e){_recording=false;var fab=el('fab');if(fab)fab.classList.remove('rec');var vs=el('voiceStatus');if(vs)vs.textContent=e.error==='not-allowed'?'Permiso denegado':'Error — intenta de nuevo'};
+  r.onresult=function(e){
+    var t='';
+    for(var i=0;i<e.results.length;i++){t+=e.results[i][0].transcript}
+    _transcript=t;
+    var vt=el('voiceText');if(vt){vt.textContent=t;vt.classList.remove('ph')}
+    var sb=el('voiceSend');if(sb)sb.disabled=!t.trim();
+  };
+  r.onend=function(){
+    _recording=false;
+    var mic=el('voiceMic');if(mic)mic.classList.remove('rec');
+    var hero=document.querySelector('.voice-hero');if(hero)hero.classList.remove('recording');
+    var vs=el('voiceStatus');
+    if(vs){vs.classList.remove('live');vs.textContent=_transcript?'✓ Listo. Pulsa Procesar.':'No se detectó nada. Vuelve a intentarlo.'}
+    var sb=el('voiceSend');if(sb)sb.disabled=!_transcript;
+  };
+  r.onerror=function(e){
+    _recording=false;
+    var mic=el('voiceMic');if(mic)mic.classList.remove('rec');
+    var hero=document.querySelector('.voice-hero');if(hero)hero.classList.remove('recording');
+    var vs=el('voiceStatus');if(vs){vs.classList.remove('live');vs.textContent=e.error==='not-allowed'?'⚠️ Permiso de micrófono denegado':'Error al grabar. Toca de nuevo.'}
+  };
   return r;
 }
 function openVoice(){
-  _transcript='';var vt=el('voiceText');
-  if(vt){vt.textContent='Pulsa el micro y cuentame — gym, comida, sueno, peso...';vt.classList.add('ph')}
-  set('voiceStatus','');var sb=el('voiceSend');if(sb)sb.disabled=true;
-  var vp=el('voicePanel');if(vp)vp.classList.add('open');
-  var ov=el('overlay');if(ov)ov.classList.add('on');
-  startRec();
+  // Llamada al entrar a la pantalla — prepara estado pero NO graba automáticamente
+  _transcript='';
+  var vt=el('voiceText');
+  if(vt){vt.textContent='Cuéntame qué has hecho hoy — gym, comida, sueño o peso.';vt.classList.add('ph')}
+  set('voiceStatus','Toca el micrófono para empezar');
+  var vs=el('voiceStatus');if(vs)vs.classList.remove('live');
+  var sb=el('voiceSend');if(sb)sb.disabled=true;
+  var mic=el('voiceMic');if(mic){mic.classList.remove('rec');mic.classList.remove('think')}
+  var hero=document.querySelector('.voice-hero');if(hero)hero.classList.remove('recording');
 }
 function closeVoice(){
+  // Al salir de la pantalla — limpia y para grabación si estaba activa
   stopRec();
-  var vp=el('voicePanel');if(vp)vp.classList.remove('open');
-  var ov=el('overlay');if(ov)ov.classList.remove('on');
-  var fab=el('fab');if(fab){fab.classList.remove('rec');fab.classList.remove('think')}
+  var mic=el('voiceMic');if(mic){mic.classList.remove('rec');mic.classList.remove('think')}
+  var hero=document.querySelector('.voice-hero');if(hero)hero.classList.remove('recording');
 }
-function startRec(){if(!_recog)_recog=initRecog();if(!_recog){set('voiceStatus','Microfono no disponible');return}try{_recog.start();_recording=true;var fab=el('fab');if(fab)fab.classList.add('rec');set('voiceStatus','🔴 Escuchando...');var vt=el('voiceText');if(vt){vt.textContent='Habla ahora...';vt.classList.add('ph')}}catch(e){set('voiceStatus','Toca para reintentar')}}
-function stopRec(){if(_recog&&_recording)try{_recog.stop()}catch(e){};_recording=false;var fab=el('fab');if(fab)fab.classList.remove('rec')}
+function toggleVoiceRec(){
+  // Botón grande: arranca o para
+  if(_recording){stopRec();return}
+  _transcript='';
+  var vt=el('voiceText');if(vt){vt.textContent='Habla ahora…';vt.classList.add('ph')}
+  var sb=el('voiceSend');if(sb)sb.disabled=true;
+  startRec();
+}
+function cancelVoice(){
+  // Borra el transcript y para grabación
+  stopRec();
+  _transcript='';
+  var vt=el('voiceText');if(vt){vt.textContent='Cuéntame qué has hecho hoy — gym, comida, sueño o peso.';vt.classList.add('ph')}
+  set('voiceStatus','Toca el micrófono para empezar');
+  var vs=el('voiceStatus');if(vs)vs.classList.remove('live');
+  var sb=el('voiceSend');if(sb)sb.disabled=true;
+}
+function startRec(){
+  if(!_recog)_recog=initRecog();
+  if(!_recog){set('voiceStatus','Micrófono no disponible en este navegador');return}
+  try{
+    _recog.start();_recording=true;
+    var mic=el('voiceMic');if(mic)mic.classList.add('rec');
+    var hero=document.querySelector('.voice-hero');if(hero)hero.classList.add('recording');
+    var vs=el('voiceStatus');if(vs){vs.textContent='Escuchando…';vs.classList.add('live')}
+  }catch(e){
+    set('voiceStatus','Toca para reintentar');
+  }
+}
+function stopRec(){
+  if(_recog&&_recording){try{_recog.stop()}catch(e){}}
+  _recording=false;
+  var mic=el('voiceMic');if(mic)mic.classList.remove('rec');
+  var hero=document.querySelector('.voice-hero');if(hero)hero.classList.remove('recording');
+  var vs=el('voiceStatus');if(vs)vs.classList.remove('live');
+}
 
 function buildSysPrompt(){
   var p=getProfile();var s=getSettings();var r=getRoutine();
@@ -1453,20 +1593,32 @@ function buildSysPrompt(){
 
 function processVoice(){
   var text=_transcript&&_transcript.trim();if(!text)return;
-  var fab=el('fab');var sb=el('voiceSend');
-  if(fab)fab.classList.add('think');if(sb)sb.disabled=true;set('voiceStatus','Procesando...');
+  var mic=el('voiceMic');var sb=el('voiceSend');
+  if(mic)mic.classList.add('think');
+  if(sb)sb.disabled=true;
+  var vs=el('voiceStatus');if(vs){vs.textContent='Procesando…';vs.classList.remove('live')}
+  function finish(success,msg){
+    if(mic)mic.classList.remove('think');
+    if(success){
+      if(vs)vs.textContent='✓ '+msg;
+      // Llevamos al usuario a Inicio para que vea el resumen actualizado
+      setTimeout(function(){_transcript='';cancelVoice();nav('home')},900);
+    }else{
+      if(vs)vs.textContent='⚠️ '+msg;
+      if(sb)sb.disabled=false;
+    }
+  }
   fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'Content-Type':'application/json','anthropic-dangerous-direct-browser-access':'true'},body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:1000,system:buildSysPrompt(),messages:[{role:'user',content:text}]})})
   .then(function(res){return res.json()})
   .then(function(data){
     var raw=((data.content||[])[0]||{}).text||'';
-    var parsed=null;try{var fence=String.fromCharCode(96,96,96);var clean=raw.split(fence+'json').join('').split(fence).join('').trim();parsed=JSON.parse(clean)}catch(e){}
-    if(parsed){applyLogged(parsed.logged||{});showToast(parsed.feedback||'Registrado.')}
-    else{applyLocalParse(text);showToast('Registrado localmente.')}
-    if(fab)fab.classList.remove('think');closeVoice();renderHome();
+    var parsed=null;
+    try{var fence=String.fromCharCode(96,96,96);var clean=raw.split(fence+'json').join('').split(fence).join('').trim();parsed=JSON.parse(clean)}catch(e){}
+    if(parsed){applyLogged(parsed.logged||{});showToast(parsed.feedback||'Registrado con IA.');finish(true,'Registrado con IA')}
+    else{applyLocalParse(text);showToast('Registrado localmente.');finish(true,'Registrado')}
   })
   .catch(function(){
-    applyLocalParse(text);showToast('Registrado localmente.');
-    if(fab)fab.classList.remove('think');closeVoice();renderHome();
+    applyLocalParse(text);showToast('Registrado localmente (sin IA).');finish(true,'Registrado sin IA');
   });
 }
 
@@ -1862,11 +2014,158 @@ function delHistorySession(key){
   renderHistory();
 }
 
+// ═══ PROGRESO — análisis de fuerza por ejercicio (estilo Hevy/Strong) ═══
+function epley1RM(weight,reps){
+  if(!weight||!reps)return 0;
+  if(reps===1)return weight;
+  return weight*(1+reps/30);
+}
+
+// Agrega todas las sesiones por nombre de ejercicio
+function gatherExerciseProgress(){
+  var byExercise={};
+  var r=getRoutine();
+  // Mapa exId -> nombre
+  var exNames={};
+  r.days.forEach(function(day){(day.exercises||[]).forEach(function(ex){exNames[ex.id]=ex.name})});
+  sKeys('gym:').forEach(function(k){
+    var s=sg(k);if(!s||!s.savedAt)return;
+    var parts=k.split(':');var date=parts[2];
+    Object.keys(s.exercises||{}).forEach(function(exId){
+      var name=exNames[exId];if(!name)return;
+      var sets=s.exercises[exId].sets||[];
+      var best1RM=0,bestWeight=0,totalVol=0;
+      sets.forEach(function(set){
+        if(set.weight&&set.reps){
+          var rm=epley1RM(set.weight,set.reps);
+          if(rm>best1RM)best1RM=rm;
+          if(set.weight>bestWeight)bestWeight=set.weight;
+          totalVol+=set.weight*set.reps;
+        }
+      });
+      if(best1RM<=0)return;
+      if(!byExercise[name])byExercise[name]=[];
+      byExercise[name].push({date:date,e1rm:Math.round(best1RM*10)/10,maxW:bestWeight,vol:Math.round(totalVol)});
+    });
+  });
+  // Ordenar cada uno por fecha y consolidar por fecha (quedarse con el mejor del día)
+  Object.keys(byExercise).forEach(function(name){
+    var byDate={};
+    byExercise[name].forEach(function(p){
+      if(!byDate[p.date]||p.e1rm>byDate[p.date].e1rm)byDate[p.date]=p;
+    });
+    byExercise[name]=Object.keys(byDate).sort().map(function(d){return byDate[d]});
+  });
+  return byExercise;
+}
+
+var _progressEx=null;
+
+function renderProgress(){
+  var content=el('progressContent');if(!content)return;content.innerHTML='';
+  var data=gatherExerciseProgress();
+  var exNames=Object.keys(data).filter(function(n){return data[n].length>=1});
+  // Sort by most data points
+  exNames.sort(function(a,b){return data[b].length-data[a].length});
+
+  if(!exNames.length){
+    var empty=document.createElement('div');empty.className='card';empty.style.cssText='text-align:center;padding:44px 18px';
+    empty.innerHTML='<div style="font-size:46px;margin-bottom:14px">📈</div><div style="font-size:17px;font-weight:700;margin-bottom:8px;font-family:var(--display)">Aún sin datos de fuerza</div><div style="font-size:13px;color:var(--t2);line-height:1.5">Guarda sesiones de gym con peso y reps. Aquí verás cómo sube tu fuerza en cada ejercicio.</div>';
+    content.appendChild(empty);return;
+  }
+
+  // Resumen arriba: total de PRs y ejercicios seguidos
+  var totalSessions=0;exNames.forEach(function(n){totalSessions+=data[n].length});
+  var summary=document.createElement('div');summary.className='card';
+  summary.innerHTML='<div class="label">Tu fuerza</div><div style="display:flex;gap:8px"><div style="flex:1;text-align:center"><div style="font-size:24px;font-weight:700;font-family:var(--display);color:var(--accent);letter-spacing:-.03em">'+exNames.length+'</div><div style="font-size:9px;font-weight:600;text-transform:uppercase;letter-spacing:.1em;color:var(--t3);margin-top:3px">Ejercicios</div></div><div style="flex:1;text-align:center"><div style="font-size:24px;font-weight:700;font-family:var(--display);color:var(--green);letter-spacing:-.03em">'+totalSessions+'</div><div style="font-size:9px;font-weight:600;text-transform:uppercase;letter-spacing:.1em;color:var(--t3);margin-top:3px">Registros</div></div></div>';
+  content.appendChild(summary);
+
+  // Selector de ejercicio
+  if(!_progressEx||exNames.indexOf(_progressEx)<0)_progressEx=exNames[0];
+  var selLabel=document.createElement('div');selLabel.className='label';selLabel.style.marginBottom='8px';selLabel.textContent='Elige ejercicio';content.appendChild(selLabel);
+  var pills=document.createElement('div');pills.style.cssText='display:flex;gap:7px;flex-wrap:wrap;margin-bottom:16px';
+  exNames.forEach(function(name){
+    var btn=document.createElement('button');
+    var sel=name===_progressEx;
+    btn.style.cssText='background:'+(sel?'var(--accent-bg)':'var(--bg2)')+';border:1px solid '+(sel?'var(--accent-border)':'var(--border)')+';border-radius:100px;padding:7px 14px;font-size:11px;font-weight:600;color:'+(sel?'var(--accent)':'var(--t2)')+';cursor:pointer;font-family:var(--sans);transition:all .15s';
+    btn.textContent=name;
+    btn.onclick=function(){_progressEx=name;renderProgress()};
+    pills.appendChild(btn);
+  });
+  content.appendChild(pills);
+
+  // Gráfica del ejercicio seleccionado
+  var series=data[_progressEx];
+  var chartCard=document.createElement('div');chartCard.className='card';
+  var first=series[0],last=series[series.length-1];
+  var delta=last.e1rm-first.e1rm;
+  var deltaPct=first.e1rm>0?Math.round(delta/first.e1rm*100):0;
+  var deltaColor=delta>0?'var(--green)':delta<0?'var(--red)':'var(--t3)';
+  var deltaSign=delta>0?'+':'';
+  var head='<div style="display:flex;align-items:baseline;justify-content:space-between;margin-bottom:4px"><div style="font-size:14px;font-weight:600;font-family:var(--display)">'+_progressEx+'</div></div>';
+  head+='<div style="display:flex;align-items:baseline;gap:10px;margin-bottom:16px"><div style="font-size:38px;font-weight:700;font-family:var(--display);letter-spacing:-.04em;line-height:1">'+last.e1rm.toFixed(1)+'<span style="font-size:16px;color:var(--t2);font-weight:600"> kg</span></div>';
+  if(series.length>1)head+='<div style="font-size:13px;font-family:var(--mono);font-weight:700;color:'+deltaColor+'">'+deltaSign+delta.toFixed(1)+'kg ('+deltaSign+deltaPct+'%)</div>';
+  head+='</div><div style="font-size:10px;color:var(--t3);font-family:var(--mono);margin-bottom:14px;letter-spacing:.05em">1RM ESTIMADO · MEJOR SERIE POR DÍA</div>';
+  chartCard.innerHTML=head;
+
+  // SVG line chart
+  if(series.length>=2){
+    var W=380,H=120;
+    var vals=series.map(function(p){return p.e1rm});
+    var mn=Math.min.apply(null,vals),mx=Math.max.apply(null,vals);
+    var pad=(mx-mn)*0.15||5;mn-=pad;mx+=pad;
+    var px=function(i){return Math.round(i/(series.length-1)*(W-20)+10)};
+    var py=function(v){return Math.round(H-10-(v-mn)/(mx-mn)*(H-20))};
+    var pts=series.map(function(p,i){return px(i)+','+py(p.e1rm)}).join(' ');
+    var svg='<svg viewBox="0 0 '+W+' '+H+'" style="width:100%;height:120px;overflow:visible">';
+    svg+='<defs><linearGradient id="pg" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="rgba(232,183,130,.25)"/><stop offset="100%" stop-color="rgba(232,183,130,0)"/></linearGradient></defs>';
+    svg+='<polygon points="10,'+H+' '+pts+' '+(W-10)+','+H+'" fill="url(#pg)"/>';
+    svg+='<polyline points="'+pts+'" fill="none" stroke="var(--accent)" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round"/>';
+    // dots
+    series.forEach(function(p,i){
+      var isLast=i===series.length-1;
+      svg+='<circle cx="'+px(i)+'" cy="'+py(p.e1rm)+'" r="'+(isLast?4.5:2.5)+'" fill="var(--accent)"'+(isLast?' stroke="var(--bg1)" stroke-width="2"':'')+'/>';
+    });
+    svg+='</svg>';
+    chartCard.innerHTML+=svg;
+  }else{
+    chartCard.innerHTML+='<div style="font-size:12px;color:var(--t3);font-style:italic;text-align:center;padding:20px 0">Necesitas al menos 2 sesiones de este ejercicio para ver la curva.</div>';
+  }
+  content.appendChild(chartCard);
+
+  // Stats card: PR, mejor peso, registros
+  var prCard=document.createElement('div');prCard.className='card';
+  var maxW=0,maxVol=0;series.forEach(function(p){if(p.maxW>maxW)maxW=p.maxW;if(p.vol>maxVol)maxVol=p.vol});
+  prCard.innerHTML='<div class="label">Récords en '+_progressEx+'</div><div style="display:flex;gap:8px"><div style="flex:1;background:var(--bg2);border-radius:var(--rxs);padding:13px;text-align:center"><div style="font-size:19px;font-weight:700;font-family:var(--display);color:var(--amber)">'+maxW+'<span style="font-size:11px;color:var(--t3)">kg</span></div><div style="font-size:8px;font-weight:600;text-transform:uppercase;letter-spacing:.08em;color:var(--t3);margin-top:3px">Peso máx</div></div><div style="flex:1;background:var(--bg2);border-radius:var(--rxs);padding:13px;text-align:center"><div style="font-size:19px;font-weight:700;font-family:var(--display);color:var(--accent)">'+last.e1rm.toFixed(0)+'<span style="font-size:11px;color:var(--t3)">kg</span></div><div style="font-size:8px;font-weight:600;text-transform:uppercase;letter-spacing:.08em;color:var(--t3);margin-top:3px">1RM est.</div></div><div style="flex:1;background:var(--bg2);border-radius:var(--rxs);padding:13px;text-align:center"><div style="font-size:19px;font-weight:700;font-family:var(--display);color:var(--green)">'+series.length+'</div><div style="font-size:8px;font-weight:600;text-transform:uppercase;letter-spacing:.08em;color:var(--t3);margin-top:3px">Sesiones</div></div></div>';
+  content.appendChild(prCard);
+}
+
+
+// Nav auto-ocultar al hacer scroll
+var _lastScroll=0,_scrollTicking=false;
+function handleScroll(){
+  var nav=document.getElementById('nav');if(!nav)return;
+  var y=window.scrollY||window.pageYOffset||0;
+  var diff=y-_lastScroll;
+  // Solo reaccionar si el movimiento es significativo
+  if(Math.abs(diff)>4){
+    if(diff>0&&y>80){nav.classList.add('hidden')}
+    else if(diff<0){nav.classList.remove('hidden')}
+    _lastScroll=y;
+  }
+  _scrollTicking=false;
+}
+window.addEventListener('scroll',function(){
+  if(!_scrollTicking){window.requestAnimationFrame(handleScroll);_scrollTicking=true}
+},{passive:true});
+// Mostrar nav al cambiar de pantalla
+function _showNav(){var n=document.getElementById('nav');if(n)n.classList.remove('hidden');_lastScroll=0;window.scrollTo(0,0)}
+
+
 // START
 function startApp(){
-  var navEl=el('nav');var fabEl=el('fab');
+  var navEl=el('nav');
   if(navEl)navEl.style.display='flex';
-  if(fabEl)fabEl.style.display='flex';
   nav('home');
   askNotifPerm();
   updateRing();
@@ -1876,9 +2175,9 @@ function startApp(){
 // INIT
 try{applyTheme(sg('theme')||'auto')}catch(e){}
 function _boot(){try{startApp()}catch(e){
-  // Si algo falla, al menos mostramos el micrófono y el nav
-  var f=document.getElementById('fab');if(f)f.style.display='flex';
+  // Plan B: si algo falla en el arranque, al menos mostramos el nav
   var n=document.getElementById('nav');if(n)n.style.display='flex';
+  var h=document.getElementById('screen-home');if(h)h.classList.add('active');
 }}
 if(document.readyState==='loading'){
   document.addEventListener('DOMContentLoaded',_boot);
